@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>发送请求</title>
+    <script src="./jquery.min.js"></script>
+</head>
+<body>
+    <input id="inputContent" type="text" placeholder="请输入发送内容"/>
+    <button id="btn">发送</button>
+    <div id="message"></div>
+    <script>
+        var ws = new WebSocket("ws://localhost:3000");
+        ws.onopen = function() {
+            console.log("socket server is running");
+        }
+        ws.onmessage = function(e) {
+            console.log(e);
+            $("#message").append("<div>"+e.data+"</div>");
+        }
+
+        ws.onclose = function() {
+                console.log("连接已经关闭");
+            }
+            
+        ws.onerror =  function() {
+            console.log("connection is error");
+        }
+
+        $("#btn").click(function(){
+            ws.send($("#inputContent").val());
+        })
+    </script>
+</body>
+</html>
